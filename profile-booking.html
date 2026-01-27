@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DutyFix IT - Select Professional</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 80vh;
+            padding-bottom: 3rem;
+        }
+
+        .service-hero {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1.5rem 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .service-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 70%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2.5rem;
+        }
+
+        .hero-title {
+            color: white;
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.25rem;
+            margin-top: 0.5rem;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+        }
+
+        .page-header {
+            display: none;
+        }
+
+        /* Filter Section */
+        .filter-container {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        .city-select {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #334155;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .city-select:focus {
+            border-color: #0f172a;
+            box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
+        }
+
+        .workers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .workers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .workers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .worker-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .worker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .worker-img-container {
+            height: 200px;
+            background-color: #f1f5f9;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .worker-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .worker-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .worker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .worker-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .worker-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: #fef3c7;
+            color: #b45309;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .worker-details {
+            margin-bottom: 1.5rem;
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-item i {
+            width: 20px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .book-btn {
+            margin-top: auto;
+            width: 100%;
+            padding: 0.875rem;
+            background-color: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .book-btn:hover {
+            background-color: #1e293b;
+        }
+
+        /* Badge for verified */
+        .verified-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #22c55e;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+            font-size: 1.1rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+            border: 1px dashed #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header client-header">
+        <div class="logo-container" onclick="window.location.href='client-page.html'">
+            <i class="fas fa-tools" style="color: #0f172a; font-size: 1.5rem;"></i>
+            <span style="font-weight: 800; font-size: 1.25rem; color: #1e293b;">DutyFix IT</span>
+        </div>
+
+        <nav class="client-nav-links">
+            <a href="client-page.html" class="client-nav-link">Home</a>
+            <a href="mybooking.html" class="client-nav-link">My Bookings</a>
+        </nav>
+
+        <div class="user-info-group">
+            <span class="user-email" id="userEmailDisplay">User</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <main class="profile-main">
+        <!-- Hero Section -->
+        <div class="service-hero">
+            <img id="serviceHeroImg" src="" alt="Service" class="service-hero-img">
+            <div class="service-hero-overlay">
+                <h1 class="hero-title" id="serviceTitle">Select a Professional</h1>
+                <p class="hero-subtitle">Choose the best expert for your needs</p>
+            </div>
+        </div>
+
+        <!-- City Filter -->
+        <div class="filter-container">
+            <label class="filter-label"><i class="fas fa-map-marker-alt" style="color:#ef4444; margin-right:5px;"></i>
+                Location:</label>
+            <select id="cityFilter" class="city-select">
+                <option value="">Select your City...</option>
+                <option value="Ariyalur">Ariyalur</option>
+                <option value="Chengalpattu">Chengalpattu</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Coimbatore">Coimbatore</option>
+                <option value="Cuddalore">Cuddalore</option>
+                <option value="Dharmapuri">Dharmapuri</option>
+                <option value="Dindigul">Dindigul</option>
+                <option value="Erode">Erode</option>
+                <option value="Kallakurichi">Kallakurichi</option>
+                <option value="Kancheepuram">Kancheepuram</option>
+                <option value="Kanyakumari">Kanyakumari</option>
+                <option value="Karur">Karur</option>
+                <option value="Krishnagiri">Krishnagiri</option>
+                <option value="Madurai">Madurai</option>
+                <option value="Mayiladuthurai">Mayiladuthurai</option>
+                <option value="Nagapattinam">Nagapattinam</option>
+                <option value="Namakkal">Namakkal</option>
+                <option value="Nilgiris">Nilgiris</option>
+                <option value="Perambalur">Perambalur</option>
+                <option value="Pudukkottai">Pudukkottai</option>
+                <option value="Ramanathapuram">Ramanathapuram</option>
+                <option value="Ranipet">Ranipet</option>
+                <option value="Salem">Salem</option>
+                <option value="Sivaganga">Sivagangai</option>
+                <option value="Tenkasi">Tenkasi</option>
+                <option value="Thanjavur">Thanjavur</option>
+                <option value="Theni">Theni</option>
+                <option value="Thoothukudi">Thoothukudi</option>
+                <option value="Tiruchirappalli">Tiruchirappalli</option>
+                <option value="Tirunelveli">Tirunelveli</option>
+                <option value="Tirupathur">Tirupathur</option>
+                <option value="Tiruppur">Tiruppur</option>
+                <option value="Tiruvallur">Tiruvallur</option>
+                <option value="Tiruvannamalai">Tiruvannamalai</option>
+                <option value="Tiruvarur">Tiruvarur</option>
+                <option value="Vellore">Vellore</option>
+                <option value="Viluppuram">Viluppuram</option>
+                <option value="Virudhunagar">Virudhunagar</option>
+            </select>
+        </div>
+
+        <div class="workers-grid" id="workersGrid">
+            <!-- Workers will be loaded here -->
+            <div class="no-results">
+                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; color: #cbd5e1;"></i>
+                <p>Please select your city to see available professionals.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="copyright">© 2025 DutyFixit. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/profile-booking.js"></script>
+</body>
+
+</html>

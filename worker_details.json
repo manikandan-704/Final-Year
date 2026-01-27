@@ -1,0 +1,15 @@
+{
+  "_id": "695409eccf1bcf4dc1939805",
+  "name": "vijay",
+  "email": "vijay@gmail.com",
+  "password": "vijay",
+  "role": "professional",
+  "mobile": "4679843518",
+  "profession": "Carpentry",
+  "experience": "2",
+  "isVerified": false,
+  "verificationStatus": "none",
+  "workerId": "DF007",
+  "createdAt": "2025-12-30T17:20:44.053Z",
+  "__v": 0
+}
