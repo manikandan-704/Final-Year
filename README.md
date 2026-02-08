@@ -19,3 +19,5 @@
 
 2. Open the Frontend:
    Open `index.html` or `login-page.html` in your browser.
+
+## 08/02/2026
