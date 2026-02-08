@@ -29,6 +29,8 @@ const BookingSchema = new mongoose.Schema({
     rejectionReason: { type: String },
     cancellationReason: { type: String },
     paymentScreenshot: { type: String }, // Base64 or URL
+    rating: { type: Number, min: 0, max: 5 }, // 5-star rating
+    feedback: { type: String }, // Review text
     createdAt: { type: Date, default: Date.now }
 });
 

@@ -1,6 +1,9 @@
 // import { setupHeaderUser, authGuard } from './utils.js';
 
 let currentBookingIdToCancel = null;
+let currentReviewBookingId = null;
+let currentRating = 0;
+let allBookings = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     const bookingsList = document.getElementById('bookingsList');
@@ -13,7 +16,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userEmail) {
         loadMyBookings(userEmail);
     }
+
+    // Star Rating Logic
+    const stars = document.querySelectorAll('#starRatingContainer i');
+    stars.forEach(star => {
+        star.addEventListener('click', function () {
+            currentRating = parseInt(this.getAttribute('data-value'));
+            updateStars(currentRating);
+        });
+    });
 });
+
+function updateStars(rating) {
+    const stars = document.querySelectorAll('#starRatingContainer i');
+    stars.forEach(star => {
+        const value = parseInt(star.getAttribute('data-value'));
+        if (value <= rating) {
+            star.classList.remove('far');
+            star.classList.add('fas');
+        } else {
+            star.classList.remove('fas');
+            star.classList.add('far');
+        }
+    });
+}
 
 // Setup global modal handlers
 window.openCancelModal = function (bookingId) {
@@ -60,24 +86,67 @@ window.confirmCancellation = async function () {
     }
 };
 
-window.markWorkCompleted = async function (bookingId) {
-    if (!confirm('Are you sure you want to mark this work as completed? This will verify that the work has been done satisfyingly.')) return;
+window.openReviewModal = function (bookingId) {
+    currentReviewBookingId = bookingId;
+    const booking = allBookings.find(b => b._id === bookingId);
+
+    if (booking) {
+        document.getElementById('reviewWorkerName').textContent = booking.workerName || 'Unknown Professional';
+        document.getElementById('reviewWorkerId').textContent = `ID: ${booking.workerId || 'N/A'}`;
+        // If we had a worker image URL in the booking or worker details, we would set it here.
+        // For now, using default or placeholder if available in future.
+        const img = document.getElementById('reviewWorkerImage');
+        if (img) {
+            if (booking.workerProfilePhoto) {
+                // Ensure correct format for data URI
+                img.src = booking.workerProfilePhoto.startsWith('data:')
+                    ? booking.workerProfilePhoto
+                    : `data:image/jpeg;base64,${booking.workerProfilePhoto}`;
+            } else {
+                img.src = "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cbd5e1'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e";
+            }
+        }
+    }
+
+    currentRating = 0;
+    updateStars(0);
+    document.getElementById('reviewFeedback').value = '';
+    document.getElementById('reviewModal').classList.add('active');
+};
+
+window.closeReviewModal = function () {
+    currentReviewBookingId = null;
+    document.getElementById('reviewModal').classList.remove('active');
+};
+
+window.submitReview = async function () {
+    if (!currentReviewBookingId) return;
+
+    if (currentRating === 0) {
+        alert('Please select a star rating.');
+        return;
+    }
+
+    const feedback = document.getElementById('reviewFeedback').value.trim();
 
     try {
-        const res = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
+        const res = await fetch(`http://localhost:5000/api/bookings/${currentReviewBookingId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                status: 'Completed'
+                status: 'Completed',
+                rating: currentRating,
+                feedback: feedback
             })
         });
 
         if (res.ok) {
-            alert('Work marked as completed! Notification sent to worker and admin.');
+            alert('Work completed and review submitted successfully!');
+            window.closeReviewModal();
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) loadMyBookings(userEmail);
         } else {
-            alert('Failed to update status.');
+            alert('Failed to submit review.');
         }
     } catch (err) {
         console.error(err);
@@ -93,6 +162,7 @@ async function loadMyBookings(email) {
         if (!res.ok) throw new Error('Failed to fetch bookings');
 
         const bookings = await res.json();
+        allBookings = bookings; // Store globally
 
         if (bookings.length === 0) {
             container.innerHTML = `
@@ -193,7 +263,7 @@ async function loadMyBookings(email) {
                             <button onclick="window.openCancelModal('${booking._id}')" class="cancel-service-btn">
                                 <i class="fas fa-times-circle"></i> Cancel Service
                             </button>
-                            <button onclick="window.markWorkCompleted('${booking._id}')" class="complete-service-btn">
+                            <button onclick="window.openReviewModal('${booking._id}')" class="complete-service-btn">
                                 <i class="fas fa-check"></i> Work Completed
                             </button>
                         </div>

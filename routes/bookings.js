@@ -60,24 +60,20 @@ router.get('/dashboard/:workerId', async (req, res) => {
             status: 'Completed'
         });
 
-        // 2. Calculate Total Earnings (Assuming fixed price for simplicity for now, or sum 'amount' if exists)
-        // Since 'amount' field isn't in schema yet, we'll placeholder it or count count * rate
-        // Let's assume a base rate per job for now, or 0 if not defined.
-        // TODO: Add 'amount' to Booking Schema for accurate calculation.
-        // For now, let's mock it: 500 per completed job.
-        const totalEarnings = completedBookings.length * 500;
-
-        // 3. Jobs Done
+        // 2. Jobs Done
         const jobsDone = completedBookings.length;
 
-        // 4. Calculate Rating
-        // Since 'rating' field isn't in Booking schema yet, we'll return a placeholder or calculate if it existed.
-        // For now, returning a static good rating or random if real data missing.
-        // Let's default to 0.0 for now until Rating system is fully implemented.
-        const rating = 0.0;
+        // 3. Calculate Rating
+        let rating = 0.0;
+        // Only consider bookings that have a rating
+        const ratedBookings = completedBookings.filter(b => b.rating && b.rating > 0);
+
+        if (ratedBookings.length > 0) {
+            const totalRating = ratedBookings.reduce((sum, booking) => sum + booking.rating, 0);
+            rating = (totalRating / ratedBookings.length).toFixed(1);
+        }
 
         res.json({
-            totalEarnings,
             jobsDone,
             rating
         });
@@ -117,7 +113,7 @@ router.get('/client/:email', async (req, res) => {
                 // Try to find in VerificationRequest first
                 let workerData = await VerificationRequest.findOne({
                     workerId: { $regex: new RegExp("^" + searchId + "$", "i") }
-                }).select('name mobile');
+                }).select('name mobile profilePhotoData');
 
                 // If not found in verification, try the main Worker collection
                 if (!workerData) {
@@ -129,6 +125,9 @@ router.get('/client/:email', async (req, res) => {
                 if (workerData) {
                     booking.workerName = workerData.name;
                     booking.workerPhone = workerData.mobile;
+                    if (workerData.profilePhotoData) {
+                        booking.workerProfilePhoto = workerData.profilePhotoData;
+                    }
                 }
                 // if still not found, booking.workerName remains undefined, and frontend shows ID fallback
             }
@@ -144,6 +143,7 @@ router.get('/client/:email', async (req, res) => {
 // Update booking status (Accept/Reject)
 router.put('/:id', async (req, res) => {
     try {
+        console.log('Update Booking Request:', req.params.id, req.body);
         const { status, rejectionReason } = req.body;
         const booking = await Booking.findById(req.params.id);
 
@@ -160,6 +160,12 @@ router.put('/:id', async (req, res) => {
         }
         if (req.body.paymentScreenshot) {
             booking.paymentScreenshot = req.body.paymentScreenshot;
+        }
+        if (req.body.rating) {
+            booking.rating = req.body.rating;
+        }
+        if (req.body.feedback) {
+            booking.feedback = req.body.feedback;
         }
 
         await booking.save();
@@ -224,6 +230,61 @@ router.get('/all', async (req, res) => {
         res.json(bookings);
     } catch (err) {
         console.error('Error fetching all bookings:', err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// Get all workers with ratings for Admin Dashboard
+router.get('/workers-ratings', async (req, res) => {
+    try {
+        const workers = await Worker.find().lean();
+        const completedBookings = await Booking.find({ status: 'Completed' }).lean();
+
+        // Calculate ratings per worker
+        const workerStats = {};
+
+        completedBookings.forEach(booking => {
+            if (booking.workerId && booking.rating && booking.rating > 0) {
+                if (!workerStats[booking.workerId]) {
+                    workerStats[booking.workerId] = { totalRating: 0, count: 0 };
+                }
+                workerStats[booking.workerId].totalRating += booking.rating;
+                workerStats[booking.workerId].count += 1;
+            }
+        });
+
+        const enrichedWorkers = [];
+
+        for (const worker of workers) {
+            const stats = workerStats[worker.workerId] || { totalRating: 0, count: 0 };
+            const avgRating = stats.count > 0 ? (stats.totalRating / stats.count).toFixed(1) : 'N/A';
+
+            // Try to find profile photo from Verification Request if verified
+            let profilePhoto = null;
+            if (worker.isVerified) {
+                const verification = await VerificationRequest.findOne({ workerId: worker.workerId }).select('profilePhotoData').lean();
+                if (verification) profilePhoto = verification.profilePhotoData;
+            } else {
+                // For unverified or no verification doc, try to fetch if they updated profile (not handled yet but placeholder)
+            }
+
+            enrichedWorkers.push({
+                _id: worker._id,
+                workerId: worker.workerId,
+                name: worker.name,
+                email: worker.email,
+                profession: worker.profession || 'Professional',
+                rating: avgRating,
+                jobsDone: stats.count,
+                profilePhoto: profilePhoto,
+                isVerified: worker.isVerified
+            });
+        }
+
+        res.json(enrichedWorkers);
+
+    } catch (err) {
+        console.error('Error fetching workers with ratings:', err);
         res.status(500).json({ message: 'Server Error' });
     }
 });

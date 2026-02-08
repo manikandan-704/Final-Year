@@ -157,17 +157,18 @@ async function updateWorkerDashboard() {
     if (!workerId) return;
 
     try {
-        // Fetch dashboard stats (Earnings, Jobs, Rating)
+        // Fetch dashboard stats (Jobs, Rating)
         const resStats = await fetch(`http://localhost:5000/api/bookings/dashboard/${workerId}`);
         const dataStats = await resStats.json();
 
-        const earningsEl = document.querySelector('.stats-card:nth-child(1) .stats-value');
-        const jobsEl = document.querySelector('.stats-card:nth-child(2) .stats-value');
-        const ratingEl = document.querySelector('.stats-card:nth-child(3) .stats-value');
+        // Stats card order has changed because earnings card is removed
+        // 1st card -> Jobs Done
+        // 2nd card -> Rating
+        const jobsEl = document.querySelector('.stats-card:nth-child(1) .stats-value');
+        const ratingEl = document.querySelector('.stats-card:nth-child(2) .stats-value');
 
-        if (earningsEl) earningsEl.textContent = `â‚¹${dataStats.totalEarnings || 0}`;
         if (jobsEl) jobsEl.textContent = dataStats.jobsDone || 0;
-        if (ratingEl) ratingEl.innerHTML = `${dataStats.rating || 'N/A'} <span style="font-size: 0.875rem; color: #64748b; font-weight: 400;">/ 5.0</span>`;
+        if (ratingEl) ratingEl.innerHTML = `${dataStats.rating || 0.0} <span style="font-size: 0.875rem; color: #64748b; font-weight: 400;">/ 5.0</span>`;
 
         // Fetch Requests for sidebar notification
         const resReq = await fetch('http://localhost:5000/api/bookings/worker/' + workerId);

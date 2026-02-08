@@ -56,6 +56,58 @@
         </div>
     </footer>
 
+
+    <!-- Cancellation Modal -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content cancellation-content">
+            <span class="close-modal" onclick="window.closeCancelModal()">&times;</span>
+            <h2>Cancel Service</h2>
+            <p>Please provide a reason for cancelling this service:</p>
+            <textarea id="cancellationReason" placeholder="Enter reason here..."></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn confirm-btn" onclick="window.confirmCancellation()">Confirm
+                    Cancellation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content review-content">
+            <span class="close-modal" onclick="window.closeReviewModal()">&times;</span>
+            <h2>Work Completed & Review</h2>
+
+            <div class="worker-profile-display">
+                <div class="worker-avatar-large">
+                    <img id="reviewWorkerImage"
+                        src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cbd5e1'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e"
+                        alt="Worker">
+                </div>
+                <h3 id="reviewWorkerName">Worker Name</h3>
+                <p id="reviewWorkerId">ID: --</p>
+            </div>
+
+            <div class="rating-section">
+                <p>Rate your experience</p>
+                <div class="star-rating" id="starRatingContainer">
+                    <i class="far fa-star rating-star" data-value="1"></i>
+                    <i class="far fa-star rating-star" data-value="2"></i>
+                    <i class="far fa-star rating-star" data-value="3"></i>
+                    <i class="far fa-star rating-star" data-value="4"></i>
+                    <i class="far fa-star rating-star" data-value="5"></i>
+                </div>
+            </div>
+
+            <div class="feedback-section">
+                <textarea id="reviewFeedback" placeholder="Write your feedback here..." rows="4"></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn submit-btn" onclick="window.submitReview()">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/utils.js"></script>
     <script src="assets/js/my-booking.js"></script>
 </body>

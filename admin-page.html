@@ -74,51 +74,30 @@
                         <div class="kpi-icon blue"><i class="fas fa-calendar-check"></i></div>
                         <div class="kpi-info">
                             <h3>Total Bookings</h3>
-                            <p class="kpi-value">1,245</p>
-                            <span class="kpi-trend positive"><i class="fas fa-arrow-up"></i> +12%</span>
+                            <p class="kpi-value">0</p>
+                            <!-- <span class="kpi-trend positive"><i class="fas fa-arrow-up"></i> +12%</span> -->
                         </div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-icon green"><i class="fas fa-dollar-sign"></i></div>
                         <div class="kpi-info">
                             <h3>Total Revenue</h3>
-                            <p class="kpi-value">$45,200</p>
-                            <span class="kpi-trend positive"><i class="fas fa-arrow-up"></i> +8%</span>
+                            <p class="kpi-value">$0</p>
+                            <!-- <span class="kpi-trend positive"><i class="fas fa-arrow-up"></i> +8%</span> -->
                         </div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon purple"><i class="fas fa-user-check"></i></div>
-                        <div class="kpi-info">
-                            <h3>Active Workers</h3>
-                            <p class="kpi-value">84</p>
-                            <span class="kpi-trend neutral"><i class="fas fa-minus"></i> 0%</span>
-                        </div>
-                    </div>
+
                     <div class="kpi-card">
                         <div class="kpi-icon orange"><i class="fas fa-clock"></i></div>
                         <div class="kpi-info">
                             <h3>Pending Jobs</h3>
-                            <p class="kpi-value">12</p>
-                            <span class="kpi-trend negative"><i class="fas fa-arrow-up"></i> +2%</span>
+                            <p class="kpi-value">0</p>
+                            <!-- <span class="kpi-trend negative"><i class="fas fa-arrow-up"></i> +2%</span> -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Charts Section -->
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <h3>Bookings Trend</h3>
-                        <div class="chart-container">
-                            <canvas id="bookingsChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-card">
-                        <h3>Revenue Trend</h3>
-                        <div class="chart-container">
-                            <canvas id="revenueChart"></canvas>
-                        </div>
-                    </div>
-                </div>
+
 
                 <!-- Tables Section -->
                 <div class="tables-grid">
@@ -166,56 +145,31 @@
                         </div>
                     </div>
 
-                    <!-- Top Workers -->
-                    <div class="table-card">
-                        <div class="card-header">
-                            <h3>Top Workers</h3>
-                            <a href="#" class="view-all">View All</a>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Worker</th>
-                                        <th>Jobs</th>
-                                        <th>Rating</th>
-                                        <th>Earnings</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="worker-cell">
-                                                <div class="avatar-sm">JD</div> John Doe
-                                            </div>
-                                        </td>
-                                        <td>145</td>
-                                        <td><i class="fas fa-star text-yellow"></i> 4.9</td>
-                                        <td>$3,200</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="worker-cell">
-                                                <div class="avatar-sm">MJ</div> Mary Jane
-                                            </div>
-                                        </td>
-                                        <td>120</td>
-                                        <td><i class="fas fa-star text-yellow"></i> 4.8</td>
-                                        <td>$2,800</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="worker-cell">
-                                                <div class="avatar-sm">RK</div> Rahul K.
-                                            </div>
-                                        </td>
-                                        <td>98</td>
-                                        <td><i class="fas fa-star text-yellow"></i> 4.7</td>
-                                        <td>$2,100</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                </div>
+            </div>
+
+            <!-- Bookings View -->
+            <div id="view-bookings" class="admin-view" style="display: none;">
+                <div class="page-header">
+                    <h2>All Bookings</h2>
+                </div>
+                <div class="table-card">
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Service</th>
+                                    <th>Worker</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allBookingsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -245,6 +199,16 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <!-- Reviews View (Worker Profiles) -->
+            <div id="view-reviews" class="admin-view" style="display: none;">
+                <div class="page-header">
+                    <h2>Worker Reviews & Profiles</h2>
+                </div>
+                <div class="reviews-grid" id="reviewsGrid">
+                    <!-- Populated by JS -->
                 </div>
             </div>
 
