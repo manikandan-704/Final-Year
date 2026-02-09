@@ -1,8 +1,13 @@
-/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
 }
 
 body {
@@ -92,6 +97,41 @@ body {
     border-color: #cbd5e1;
 }
 
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #0f172a;
+}
+
+.nav-menu-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Desktop Order: Profile/Bookings -> Email -> Logout */
+@media (min-width: 769px) {
+    .client-nav-links {
+        order: 1;
+        display: flex;
+        gap: 2rem;
+    }
+
+    .user-email {
+        order: 2;
+        margin-right: 1rem;
+    }
+
+    .logout-btn {
+        order: 3;
+    }
+}
+
+
 /* Authentication Section (General) */
 .auth-container {
     display: flex;
@@ -177,7 +217,7 @@ main {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 2rem;
     justify-content: center;
 }
@@ -535,17 +575,75 @@ main {
 }
 
 /* Mobile Responsiveness */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
 
     /* Header */
     .header {
         padding: 1rem;
-        flex-direction: column;
+        flex-direction: row;
+        /* Ensure row for logo and burger */
+        justify-content: space-between;
+        align-items: center;
         gap: 1rem;
+        position: relative;
+        /* For dropdown positioning */
     }
 
     .header.client-header {
         padding: 0.75rem 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    /* Mobile Menu Dropdown */
+    .nav-menu-wrapper {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 250px;
+        background-color: white;
+        flex-direction: column;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        align-items: center;
+        /* Center content */
+        border-top: 1px solid #f1f5f9;
+        gap: 1.5rem;
+        border-radius: 0 0 0 1rem;
+    }
+
+    .nav-menu-wrapper.active {
+        display: flex;
+    }
+
+    .client-nav-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        gap: 1rem;
+        order: 2;
+        /* Middle */
+    }
+
+    .user-email {
+        order: 1;
+        /* Top */
+        font-weight: 600;
+        color: #0f172a;
+        margin-right: 0;
+    }
+
+    .logout-btn {
+        order: 3;
+        /* Bottom */
+        width: 100%;
+        text-align: center;
     }
 
     /* Main Content */
@@ -1025,6 +1123,48 @@ main {
     padding: 1.5rem 0;
     flex-shrink: 0;
     overflow-y: auto;
+    transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.5rem 0;
+    }
+
+    .sidebar-menu {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .menu-item {
+        padding: 0.75rem 1rem;
+        white-space: nowrap;
+        border-right: 1px solid #f1f5f9;
+        font-size: 0.85rem;
+    }
+
+    .menu-item.active {
+        border-right: 1px solid #f1f5f9;
+        border-bottom: 3px solid #0f172a;
+    }
+
+    .admin-topbar {
+        padding: 0 1rem;
+    }
+
+    .admin-top-links {
+        display: none;
+        /* Hide top links on mobile in favor of sidebar or hamburger if implemented later */
+    }
 }
 
 .sidebar-menu {
@@ -1187,7 +1327,7 @@ main {
 /* Charts */
 .charts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -1213,7 +1353,7 @@ main {
 /* Tables */
 .tables-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
@@ -1805,9 +1945,15 @@ textarea:focus {
 }
 
 /* Reviews Section - Worker Cards */
+#view-reviews .page-header {
+    justify-content: center;
+}
+
 .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 1.5rem;
     margin-top: 1rem;
 }

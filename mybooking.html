@@ -21,22 +21,23 @@
             <span class="logo-text">DutyFix IT</span>
         </div>
 
-        <nav class="client-nav-links">
-            <a href="client-page.html" class="client-nav-link">Home</a>
-            <a href="client-profile.html" class="client-nav-link">Profile</a>
-            <a href="mybooking.html" class="client-nav-link active">My Bookings</a>
-        </nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
 
-        <div class="user-info-group">
+        <div class="nav-menu-wrapper" id="navMenu">
             <span class="user-email" id="userEmailDisplay">User</span>
+            <nav class="client-nav-links">
+                <a href="client-page.html" class="client-nav-link">Home</a>
+                <a href="client-profile.html" class="client-nav-link">Profile</a>
+                <a href="mybooking.html" class="client-nav-link active">My Bookings</a>
+            </nav>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
 
     <main class="my-bookings-container">
-        <div class="back-link-container">
-            <a href="client-page.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
-        </div>
+
 
         <h1 class="page-title">
             <i class="fas fa-history page-title-icon"></i> Booking History
@@ -52,7 +53,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <p class="copyright">Â© 2025 DutyFixit. All rights reserved.</p>
+            <p class="copyright">Â© 2026 DutyFixit. All rights reserved.</p>
         </div>
     </footer>
 

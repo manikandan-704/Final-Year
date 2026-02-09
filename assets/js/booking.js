@@ -330,12 +330,15 @@ window.handleBooking = async function (event) {
         if (!res.ok) throw new Error('Booking failed. Server returned ' + res.status);
 
         const data = await res.json();
-        alert('Booking Request Sent Successfully!\n\nThe professional has been notified. You will be notified here once they Accept or Deny.');
-        window.location.href = 'client-page.html';
+        window.showToast('Booking Request Sent Successfully!', 'success');
+
+        setTimeout(() => {
+            window.location.href = 'client-page.html';
+        }, 2000);
 
     } catch (err) {
         console.error(err);
-        alert('Error creating booking: ' + err.message);
+        window.showToast('Error creating booking: ' + err.message, 'error');
     }
 };
 

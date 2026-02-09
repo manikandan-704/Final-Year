@@ -58,7 +58,7 @@ window.confirmCancellation = async function () {
 
     const reason = document.getElementById('cancellationReason').value.trim();
     if (!reason) {
-        alert('Please provide a reason for cancellation.');
+        window.showToast('Please provide a reason for cancellation.', 'error');
         return;
     }
 
@@ -73,16 +73,16 @@ window.confirmCancellation = async function () {
         });
 
         if (res.ok) {
-            alert('Service cancelled successfully.');
+            window.showToast('Service cancelled successfully.', 'success');
             window.closeCancelModal();
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) loadMyBookings(userEmail);
         } else {
-            alert('Failed to cancel service.');
+            window.showToast('Failed to cancel service.', 'error');
         }
     } catch (err) {
         console.error(err);
-        alert('An error occurred. Please try again.');
+        window.showToast('An error occurred. Please try again.', 'error');
     }
 };
 
@@ -123,7 +123,7 @@ window.submitReview = async function () {
     if (!currentReviewBookingId) return;
 
     if (currentRating === 0) {
-        alert('Please select a star rating.');
+        window.showToast('Please select a star rating.', 'error');
         return;
     }
 
@@ -141,16 +141,16 @@ window.submitReview = async function () {
         });
 
         if (res.ok) {
-            alert('Work completed and review submitted successfully!');
+            window.showToast('Work completed and review submitted successfully!', 'success');
             window.closeReviewModal();
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) loadMyBookings(userEmail);
         } else {
-            alert('Failed to submit review.');
+            window.showToast('Failed to submit review.', 'error');
         }
     } catch (err) {
         console.error(err);
-        alert('An error occurred. Please try again.');
+        window.showToast('An error occurred. Please try again.', 'error');
     }
 };
 

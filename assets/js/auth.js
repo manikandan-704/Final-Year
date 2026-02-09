@@ -115,6 +115,29 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUI();
     }
 
+    function showError(message) {
+        let errorDiv = document.getElementById('auth-error-message');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'auth-error-message';
+            errorDiv.style.color = '#dc2626'; // Red color
+            errorDiv.style.marginTop = '10px';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.fontSize = '0.9rem';
+            const form = document.getElementById('authForm');
+            // Insert before the submit button
+            const btn = document.getElementById('submitBtn');
+            if (form && btn) {
+                form.insertBefore(errorDiv, btn);
+            }
+        }
+        errorDiv.textContent = message;
+        // clear after 5 seconds
+        setTimeout(() => {
+            if (errorDiv) errorDiv.textContent = '';
+        }, 5000);
+    }
+
     async function handleAuth(e) {
         e.preventDefault();
         const emailInput = document.querySelector('#field-email input');
@@ -163,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.msg || 'Registration failed');
                 }
 
-                alert('Registration successful! Please login.');
+                window.showToast('Registration successful! Please login.', 'success');
                 toggleMode(); // Switch to login view
 
             } else {
@@ -194,23 +217,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (user.workerId) localStorage.setItem('workerId', user.workerId);
                 }
 
-                alert(`Login successful! Welcome back, ${user.name}.`);
+                window.showToast(`Login successful! Welcome back, ${user.name}.`, 'success');
 
-                if (user.role === 'professional') {
-                    window.location.href = 'worker-page.html';
-                } else if (user.role === 'admin') {
-                    window.location.href = 'admin-page.html';
-                } else {
-                    window.location.href = 'client-page.html';
-                }
+                setTimeout(() => {
+                    if (user.role === 'professional') {
+                        window.location.href = 'worker-page.html';
+                    } else if (user.role === 'admin') {
+                        window.location.href = 'admin-page.html';
+                    } else {
+                        window.location.href = 'client-page.html';
+                    }
+                }, 1000); // Wait a bit for the toast to be seen
             }
         } catch (err) {
             console.error(err);
-            if (err.message === 'Failed to fetch') {
-                alert('Connection to server failed. Please ensure the backend server is running on port 5000.');
-            } else {
-                alert(err.message);
+            let msg = err.message;
+            if (msg === 'Failed to fetch') {
+                msg = 'Connection to server failed. Please ensure the backend server is running on port 5000.';
             }
+            window.showToast(msg, 'error');
         }
     }
 

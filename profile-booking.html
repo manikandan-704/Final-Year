@@ -267,13 +267,16 @@
             <span style="font-weight: 800; font-size: 1.25rem; color: #1e293b;">DutyFix IT</span>
         </div>
 
-        <nav class="client-nav-links">
-            <a href="client-page.html" class="client-nav-link">Home</a>
-            <a href="mybooking.html" class="client-nav-link">My Bookings</a>
-        </nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
 
-        <div class="user-info-group">
+        <div class="nav-menu-wrapper" id="navMenu">
             <span class="user-email" id="userEmailDisplay">User</span>
+            <nav class="client-nav-links">
+                <a href="client-page.html" class="client-nav-link">Home</a>
+                <a href="mybooking.html" class="client-nav-link">My Bookings</a>
+            </nav>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
