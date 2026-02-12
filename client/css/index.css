@@ -799,41 +799,17 @@ main {
         padding: 1.5rem;
     }
 
-    .worker-profile-section {
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 0;
-    }
-
-    .profile-image-container {
-        width: 64px;
-        height: 64px;
-    }
-
-    .worker-divider {
-        display: none;
-    }
+    /* Profile styles removed to keep vertical stacking like desktop */
 
     .worker-main-content {
         padding: 1.5rem;
-    }
-
-    .worker-name {
-        text-align: left;
-        font-size: 1.1rem;
-    }
-
-    .worker-profession {
-        text-align: left;
-        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 480px) {
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 
     .client-nav-links {
@@ -2080,4 +2056,18 @@ textarea:focus {
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-size: 14px;
+}
+
+/* Worker Request Card Grid */
+.request-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+    .request-card-grid {
+        grid-template-columns: 1fr;
+    }
 }

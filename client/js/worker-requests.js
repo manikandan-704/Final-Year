@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span style="font-size:0.8rem; padding:0.25rem 0.5rem; background:${statusColor}20; color:${statusColor}; border-radius:4px; font-weight:600;">${booking.status}</span>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; font-size:0.9rem;">
+                    <div class="request-card-grid">
                         <div>
                             <p style="margin:0; color:#64748b; font-size:0.8rem;">Date & Time</p>
                             <p style="margin:0; font-weight:500; color:#334155;">${dateStr} @ ${booking.time}</p>

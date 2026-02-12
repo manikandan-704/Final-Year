@@ -14,11 +14,25 @@
 
 <body>
 
-    <header class="header">
+    <header class="header client-header"
+        style="position: sticky; top: 0; z-index: 100; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <!-- Left: Logo -->
         <div class="logo-container" onclick="window.location.href='worker-page.html'">
             <img src="images/logo.jpg" alt="DutyFix IT" class="logo-image">
         </div>
-        <button class="logout-btn" onclick="window.location.href='index.html'">Logout</button>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="nav-menu-wrapper" id="navMenu">
+            <span class="user-email" id="workerEmailDisplay"></span>
+            <nav class="client-nav-links">
+                <a href="worker-page.html" class="client-nav-link">Profile</a>
+                <a href="request.html" class="client-nav-link">Requests</a>
+            </nav>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
     </header>
 
     <main class="verify-main">

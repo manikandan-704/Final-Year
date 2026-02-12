@@ -93,6 +93,9 @@ function setupHeaderUser() {
 
     const headerEmailDisplay = document.getElementById('headerEmailDisplay');
     if (headerEmailDisplay) headerEmailDisplay.textContent = email;
+
+    const workerEmailDisplay = document.getElementById('workerEmailDisplay');
+    if (workerEmailDisplay) workerEmailDisplay.textContent = email;
 }
 
 // Attach to window so it's globally available
