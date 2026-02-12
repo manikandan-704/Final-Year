@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Client = require('./models/Client');
-const Worker = require('./models/Worker');
-const Admin = require('./models/Admin');
+const Client = require('../server/models/Client');
+const Worker = require('../server/models/Worker');
+const Admin = require('../server/models/Admin');
 require('dotenv').config();
 
 const checkDB = async () => {

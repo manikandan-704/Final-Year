@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const User = require('./models/User');
-const Client = require('./models/Client');
-const Worker = require('./models/Worker');
-const Admin = require('./models/Admin');
+const User = require('../server/models/User');
+const Client = require('../server/models/Client');
+const Worker = require('../server/models/Worker');
+const Admin = require('../server/models/Admin');
 require('dotenv').config();
 
 const migrate = async () => {

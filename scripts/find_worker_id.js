@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Worker = require('./models/Worker');
+const Worker = require('../server/models/Worker');
 
 mongoose.connect(process.env.MONGO_URI)
     .then(async () => {

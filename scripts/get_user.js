@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-const User = require('./models/User');
+const User = require('../server/models/User');
 const fs = require('fs');
 
 mongoose.connect(process.env.MONGO_URI)
