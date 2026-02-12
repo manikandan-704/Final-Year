@@ -15,8 +15,7 @@
 <body>
 
     <!-- Header -->
-    <header class="header client-header"
-        style="position: sticky; top: 0; z-index: 100; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+    <header class="header client-header worker-header-sticky">
         <!-- Left: Logo -->
         <div class="logo-container" onclick="window.location.href='worker-page.html'">
             <img src="images/logo.jpg" alt="DutyFix IT" class="logo-image">
@@ -38,7 +37,7 @@
 
     <div class="worker-dashboard-container" style="min-height: calc(100vh - 80px);">
         <!-- Sidebar -->
-        <aside class="worker-sidebar" style="background-color: transparent; padding-top: 1rem;">
+        <aside class="worker-sidebar worker-sidebar-transparent">
             <div class="worker-profile-section">
                 <!-- Profile Image with Upload Trigger -->
                 <!-- Profile Image (Initials Only) -->
@@ -46,8 +45,7 @@
                     onclick="document.getElementById('profileUpload').click()">
                     <img src="images/default-avatar.png" alt="Profile" id="workerProfileImg" class="worker-profile-img"
                         style="display: none;">
-                    <div id="workerInitials"
-                        style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:#0f172a; color:white; font-size:3rem; font-weight:700;">
+                    <div id="workerInitials" class="worker-initials-container">
                         <!-- Initials injected by JS -->
                     </div>
 
@@ -59,7 +57,7 @@
                 </div>
 
                 <h2 class="worker-name" id="workerName">Worker Name</h2>
-                <p class="worker-profession" id="workerProfession" style="color: #64748b; font-size: 0.9rem;">Profession
+                <p class="worker-profession" id="workerProfession">Profession
                 </p>
             </div>
 
@@ -69,7 +67,7 @@
 
         <!-- Main Content -->
         <main class="worker-main-content">
-            <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 2rem; color: #0f172a;">Dashboard</h1>
+            <h1 class="dashboard-title">Dashboard</h1>
 
             <!-- Stats Overview -->
             <div class="stats-grid">
@@ -93,8 +91,7 @@
                     </div>
                     <div class="stats-info">
                         <p class="stats-label">Rating</p>
-                        <h3 class="stats-value">0.0 <span
-                                style="font-size: 0.875rem; color: #64748b; font-weight: 400;">/ 5.0</span></h3>
+                        <h3 class="stats-value">0.0 <span class="rating-text">/ 5.0</span></h3>
                     </div>
                 </div>
             </div>

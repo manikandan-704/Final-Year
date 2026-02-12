@@ -15,8 +15,7 @@
 <body>
 
     <!-- Header -->
-    <header class="header client-header"
-        style="position: sticky; top: 0; z-index: 100; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+    <header class="header client-header worker-header-sticky">
         <!-- Left: Logo -->
         <div class="logo-container" onclick="window.location.href='worker-page.html'">
             <img src="images/logo.jpg" alt="DutyFix IT" class="logo-image">
@@ -30,7 +29,7 @@
             <span class="user-email" id="workerEmailDisplay"></span>
             <nav class="client-nav-links">
                 <a href="worker-page.html" class="client-nav-link">Profile</a>
-                <a href="request.html" class="client-nav-link" style="color: #0f172a;">Requests</a>
+                <a href="request.html" class="client-nav-link active-link">Requests</a>
             </nav>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
@@ -38,7 +37,7 @@
 
     <div class="worker-dashboard-container" style="min-height: calc(100vh - 80px);">
         <!-- Sidebar -->
-        <aside class="worker-sidebar" style="background-color: transparent; padding-top: 1rem;">
+        <aside class="worker-sidebar worker-sidebar-transparent">
             <div class="worker-profile-section">
                 <!-- Profile Image with Upload Trigger -->
                 <div class="profile-image-container" id="profileContainer" title="Click to upload photo">
@@ -54,7 +53,7 @@
                 </div>
 
                 <h2 class="worker-name" id="workerName">Worker Name</h2>
-                <p class="worker-profession" id="workerProfession" style="color: #64748b; font-size: 0.9rem;">Profession
+                <p class="worker-profession" id="workerProfession">Profession
                 </p>
                 <!-- Extra info container will be injected here by script.js -->
             </div>
@@ -62,11 +61,10 @@
 
         <!-- Main Content -->
         <main class="worker-main-content">
-            <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 2rem; color: #0f172a;">Requests</h1>
+            <h1 class="dashboard-title">Requests</h1>
 
-            <div id="requestsContainer"
-                style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <p style="color: #64748b; text-align: center;">Loading requests...</p>
+            <div id="requestsContainer" class="requests-container-card">
+                <p class="loading-text">Loading requests...</p>
             </div>
         </main>
     </div>
