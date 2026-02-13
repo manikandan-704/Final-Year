@@ -11,7 +11,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chart logic (from old script.js lines 1621+)
     initCharts();
 
+
     // Admin Tabs Logic
+    // Sidebar Toggle Logic
+    const toggleBtn = document.getElementById('adminMenuToggle');
+    const sidebar = document.getElementById('adminSidebar');
+
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 &&
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(e.target) &&
+                !toggleBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Close sidebar when clicking a menu item (on mobile)
+        const menuItems = sidebar.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    }
     const views = {
         dashboard: document.getElementById('view-dashboard'),
         bookings: document.getElementById('view-bookings'),
@@ -24,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dashboard: document.querySelectorAll('.menu-item:nth-child(1), .top-link:nth-child(1)'),
         bookings: document.querySelectorAll('.menu-item:nth-child(2), .top-link:nth-child(2)'),
         workers: document.querySelectorAll('.menu-item:nth-child(3), .top-link:nth-child(3)'),
-        payments: document.querySelectorAll('.menu-item:nth-child(6), .top-link:nth-child(4)'),
-        reviews: document.querySelectorAll('.menu-item:nth-child(7)') // "Reviews" is 7th in sidebar
+        payments: document.querySelectorAll('.menu-item:nth-child(8), .top-link:nth-child(4)'), // Payments 8th
+        reviews: document.querySelectorAll('.menu-item:nth-child(5)') // Reviews 5th
     };
 
     function switchView(viewName) {
@@ -98,6 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load Dashboard Stats
     loadDashboardStats();
 
+    // Make "View All" link work
+    const viewAllBtn = document.querySelector('.view-all');
+    if (viewAllBtn) {
+        viewAllBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView('bookings');
+        });
+    }
+
 });
 
 // Payments List Logic
@@ -131,12 +170,12 @@ async function loadPayments() {
             else statusStyle = 'background: #f1f5f9; color: #475569;';
 
             tr.innerHTML = `
-                <td>#${booking.bookingId || 'N/A'}</td>
-                <td>${booking.workerName || 'Unknown'}</td>
-                <td>${booking.workerId || 'N/A'}</td>
-                <td>${dateStr}</td>
-                <td><span class="status-badge" style="${statusStyle}">${booking.status}</span></td>
-                <td>
+                <td data-label="Booking ID">#${booking.bookingId || 'N/A'}</td>
+                <td data-label="Worker Name">${booking.workerName || 'Unknown'}</td>
+                <td data-label="Worker ID">${booking.workerId || 'N/A'}</td>
+                <td data-label="Date">${dateStr}</td>
+                <td data-label="Status"><span class="status-badge" style="${statusStyle}">${booking.status}</span></td>
+                <td data-label="Screenshot">
                     <button onclick="viewScreenshot('${booking._id}')" style="padding: 4px 10px; border:none; background:#3b82f6; color:white; border-radius:4px; cursor:pointer;">
                         <i class="fas fa-eye"></i> View
                     </button>
@@ -211,24 +250,24 @@ async function loadWorkers() {
             }
 
             tr.innerHTML = `
-                <td style="font-weight: 500;">
+                <td data-label="Name" style="font-weight: 500;">
                     <div style="display:flex; align-items:center; gap:0.75rem;">
                         ${profileHTML}
                         <span>${req.name}</span>
                     </div>
                 </td>
-                <td>${req.email}</td>
-                <td>${req.mobile}</td>
-                <td>${req.city}</td>
-                <td><span style="background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem;">${req.idType}</span></td>
-                <td><span class="status-badge" style="${statusColor}">${req.status}</span></td>
-                <td>
+                <td data-label="Email">${req.email}</td>
+                <td data-label="Mobile">${req.mobile}</td>
+                <td data-label="City">${req.city}</td>
+                <td data-label="ID Type"><span style="background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem;">${req.idType}</span></td>
+                <td data-label="Status"><span class="status-badge" style="${statusColor}">${req.status}</span></td>
+                <td data-label="Certificate">
                     ${req.certificateData
                     ? `<a href="#" onclick="const win = window.open(); win.document.write('<iframe src=\\'${req.certificateData}\\' frameborder=\\'0\\' style=\\'border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;\\' allowfullscreen></iframe>');" style="color:#2563eb; text-decoration:underline; font-size:0.85rem;"><i class="fas fa-paperclip"></i> ${req.certificate || 'View File'}</a>`
                     : `<span style="font-size:0.85rem; color:#94a3b8;">No File</span>`
                 }
                 </td>
-                <td>${actionBtn}</td>
+                <td data-label="Action">${actionBtn}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -300,11 +339,11 @@ async function loadAllBookings(tbody, limit = 0) {
                 : (booking.workerName || booking.workerId || '-');
 
             tr.innerHTML = `
-               <td>#${idShort}</td>
-               <td>${booking.clientName}</td>
-               <td>${booking.subService} (${booking.service})</td>
-               <td>${workerDisplay}</td>
-               <td>
+               <td data-label="ID">#${idShort}</td>
+               <td data-label="Customer">${booking.clientName}</td>
+               <td data-label="Service">${booking.subService} (${booking.service})</td>
+               <td data-label="Worker">${workerDisplay}</td>
+               <td data-label="Status">
                    <span class='status-badge' style='${statusStyle} padding: 4px 10px; border-radius: 4px; font-weight: 500; font-size: 0.85rem;'>${booking.status}</span>
                    ${rejectionInfo}
                </td>

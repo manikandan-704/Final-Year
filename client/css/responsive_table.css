@@ -1,0 +1,58 @@
+/* Responsive Table Styles for Mobile */
+@media (max-width: 1024px) {
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table,
+    .admin-table tbody,
+    .admin-table tr,
+    .admin-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .admin-table tr {
+        margin-bottom: 1.5rem;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .admin-table td {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        text-align: right;
+        padding: 1rem 1rem 1rem 45%;
+        /* Leave space for label on left */
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.95rem;
+        min-height: 50px;
+        position: relative;
+        flex-wrap: wrap;
+        /* Allow content to wrap if needed */
+        gap: 0.5rem;
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+        padding-bottom: 1.5rem;
+    }
+
+    /* Add labels via data-label attribute */
+    .admin-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40%;
+        font-weight: 600;
+        color: #64748b;
+        text-align: left;
+        white-space: nowrap;
+    }
+}

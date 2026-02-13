@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - DutyFix IT</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/responsive_table.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,6 +19,9 @@
 
     <!-- Top Navigation Bar -->
     <nav class="admin-topbar">
+        <div class="mobile-menu-toggle" id="adminMenuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
         <div class="logo-container" onclick="window.location.href='index.html'">
             <img src="images/logo.jpg" alt="DutyFix IT" class="logo-image">
         </div>
@@ -39,16 +43,16 @@
 
     <div class="admin-layout">
         <!-- Sidebar -->
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar" id="adminSidebar">
             <ul class="sidebar-menu">
                 <li class="menu-item active"><i class="fas fa-th-large"></i> <span>Dashboard</span></li>
                 <li class="menu-item"><i class="fas fa-calendar-check"></i> <span>Bookings</span></li>
                 <li class="menu-item"><i class="fas fa-hard-hat"></i> <span>Workers</span></li>
                 <li class="menu-item"><i class="fas fa-users"></i> <span>Customers</span></li>
-                <li class="menu-item"><i class="fas fa-briefcase"></i> <span>Services</span></li>
-                <li class="menu-item"><i class="fas fa-credit-card"></i> <span>Payments</span></li>
                 <li class="menu-item"><i class="fas fa-star"></i> <span>Reviews</span></li>
+                <li class="menu-item"><i class="fas fa-briefcase"></i> <span>Services</span></li>
                 <li class="menu-item"><i class="fas fa-headset"></i> <span>Support</span></li>
+                <li class="menu-item"><i class="fas fa-credit-card"></i> <span>Payments</span></li>
                 <li class="menu-item"><i class="fas fa-file-alt"></i> <span>Reports</span></li>
                 <li class="menu-item"><i class="fas fa-laptop-code"></i> <span>CMS</span></li>
                 <li class="menu-item"><i class="fas fa-cog"></i> <span>Settings</span></li>
