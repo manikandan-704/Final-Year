@@ -35,7 +35,7 @@
         </div>
     </header>
 
-    <div class="worker-dashboard-container" style="min-height: calc(100vh - 80px);">
+    <div class="worker-dashboard-container min-h-screen-minus-header">
         <!-- Sidebar -->
         <aside class="worker-sidebar worker-sidebar-transparent">
             <div class="worker-profile-section">
@@ -43,8 +43,8 @@
                 <!-- Profile Image (Initials Only) -->
                 <div class="profile-image-container" id="profileContainer"
                     onclick="document.getElementById('profileUpload').click()">
-                    <img src="images/default-avatar.png" alt="Profile" id="workerProfileImg" class="worker-profile-img"
-                        style="display: none;">
+                    <img src="images/default-avatar.png" alt="Profile" id="workerProfileImg"
+                        class="worker-profile-img hidden">
                     <div id="workerInitials" class="worker-initials-container">
                         <!-- Initials injected by JS -->
                     </div>
@@ -53,7 +53,7 @@
                     <div class="upload-overlay">
                         <i class="fas fa-camera"></i>
                     </div>
-                    <input type="file" id="profileUpload" accept="image/*" style="display: none;">
+                    <input type="file" id="profileUpload" accept="image/*" class="hidden">
                 </div>
 
                 <h2 class="worker-name" id="workerName">Worker Name</h2>

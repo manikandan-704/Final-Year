@@ -14,8 +14,7 @@
 
 <body>
 
-    <header class="header client-header"
-        style="position: sticky; top: 0; z-index: 100; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+    <header class="header client-header worker-verify-header">
         <!-- Left: Logo -->
         <div class="logo-container" onclick="window.location.href='worker-page.html'">
             <img src="images/logo.jpg" alt="DutyFix IT" class="logo-image">
@@ -39,7 +38,7 @@
 
         <!-- Form Section -->
         <div class="verify-form-card" id="verifyFormCard">
-            <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 2rem; color: #0f172a; text-align: center;">
+            <h1 class="worker-verify-title">
                 Worker Verification</h1>
 
             <form id="verificationForm" onsubmit="handleVerification(event)">
@@ -48,22 +47,22 @@
 
                 <!-- Profile Photo -->
                 <div class="input-group">
-                    <label class="input-label">Profile Photo <span style="color:red">*</span> <span
-                            style="font-size: 0.8rem; color: #64748b; font-weight: 400;">(JPEG/PNG, Max
+                    <label class="input-label">Profile Photo <span class="input-required">*</span> <span
+                            class="input-hint">(JPEG/PNG, Max
                             20MB)</span></label>
-                    <input type="file" class="form-input" id="v-profile-photo" accept="image/jpeg, image/png"
-                        style="padding-left: 1rem;" required>
+                    <input type="file" class="form-input form-input-file" id="v-profile-photo"
+                        accept="image/jpeg, image/png" required>
                 </div>
 
                 <!-- Full Name & Gender -->
                 <div class="form-row">
                     <div class="input-group">
-                        <label class="input-label">Full Name <span style="color:red">*</span></label>
+                        <label class="input-label">Full Name <span class="input-required">*</span></label>
                         <input type="text" class="form-input" id="v-name" placeholder="Enter full name" required>
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">Gender <span style="color:red">*</span></label>
+                        <label class="input-label">Gender <span class="input-required">*</span></label>
                         <select class="form-input" id="v-gender" required>
                             <option value="" disabled selected>Select Gender</option>
                             <option value="Male">Male</option>
@@ -76,12 +75,12 @@
                 <!-- DOB & Email -->
                 <div class="form-row">
                     <div class="input-group">
-                        <label class="input-label">Date of Birth <span style="color:red">*</span></label>
+                        <label class="input-label">Date of Birth <span class="input-required">*</span></label>
                         <input type="date" class="form-input" id="v-dob" required>
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">Email Address <span style="color:red">*</span></label>
+                        <label class="input-label">Email Address <span class="input-required">*</span></label>
                         <input type="email" class="form-input" id="v-email" placeholder="example@email.com" required>
                     </div>
                 </div>
@@ -89,7 +88,7 @@
                 <!-- Mobile & OTP -->
                 <div class="form-row">
                     <div class="input-group form-group-full">
-                        <label class="input-label">Mobile Number <span style="color:red">*</span></label>
+                        <label class="input-label">Mobile Number <span class="input-required">*</span></label>
                         <input type="tel" class="form-input" id="v-mobile" placeholder="Mobile Number" required>
                     </div>
                 </div>
@@ -97,7 +96,7 @@
                 <!-- Government ID Proof -->
                 <div class="form-row">
                     <div class="input-group">
-                        <label class="input-label">Government ID Type <span style="color:red">*</span></label>
+                        <label class="input-label">Government ID Type <span class="input-required">*</span></label>
                         <select class="form-input" id="v-id-type" required>
                             <option value="" disabled selected>Select ID Type</option>
                             <option value="Aadhaar">Aadhaar Card</option>
@@ -108,42 +107,42 @@
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">ID Number <span style="color:red">*</span></label>
+                        <label class="input-label">ID Number <span class="input-required">*</span></label>
                         <input type="text" class="form-input" id="v-id-number" placeholder="Enter ID Number" required>
                     </div>
                 </div>
 
                 <!-- Profession Certificate -->
                 <div class="input-group">
-                    <label class="input-label">Profession Certificate / License <span style="color:red">*</span> <span
-                            style="font-size: 0.8rem; color: #64748b; font-weight: 400;">(Max 2MB)</span></label>
-                    <input type="file" class="form-input" id="v-certificate" accept=".pdf,image/*"
-                        style="padding-left: 1rem;" required>
+                    <label class="input-label">Profession Certificate / License <span class="input-required">*</span>
+                        <span class="input-hint">(Max 2MB)</span></label>
+                    <input type="file" class="form-input form-input-file" id="v-certificate" accept=".pdf,image/*"
+                        required>
                 </div>
 
-                <h2 class="section-header" style="margin-top: 2rem;">Address & Preferences</h2>
+                <h2 class="section-header section-header-spacing">Address & Preferences</h2>
 
                 <!-- Address -->
                 <div class="form-row">
                     <div class="input-group">
-                        <label class="input-label">City <span style="color:red">*</span></label>
+                        <label class="input-label">City <span class="input-required">*</span></label>
                         <input type="text" class="form-input" id="v-city" placeholder="City" required>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Pincode <span style="color:red">*</span></label>
+                        <label class="input-label">Pincode <span class="input-required">*</span></label>
                         <input type="text" class="form-input" id="v-pincode" placeholder="Pincode" required>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label">Full Address / Area <span style="color:red">*</span></label>
+                    <label class="input-label">Full Address / Area <span class="input-required">*</span></label>
                     <textarea class="form-input" id="v-address" rows="3" placeholder="Street Address, Area..."
                         required></textarea>
                 </div>
 
 
 
-                <button type="submit" class="submit-btn" style="margin-top: 2rem;">Submit for Verification</button>
+                <button type="submit" class="submit-btn submit-btn-spacing">Submit for Verification</button>
             </form>
         </div>
 
@@ -152,52 +151,48 @@
             <div class="pending-icon">
                 <i class="fas fa-hourglass-half"></i>
             </div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Verification Pending
+            <h1 class="verify-state-title">Verification Pending
             </h1>
-            <p style="color: #64748b; margin-bottom: 2rem; line-height: 1.6;">
+            <p class="verify-state-text">
                 Thank you! Your details have been submitted successfully. <br>
                 Our team is reviewing your profile. This process typically takes 24-48 hours.
             </p>
-            <a href="worker-page.html" class="submit-btn"
-                style="text-decoration: none; display: inline-block; width: auto; padding: 0.75rem 2rem;">Back to
+            <a href="worker-page.html" class="submit-btn verify-state-btn">Back to
                 Home</a>
         </div>
 
         <!-- Approved State (Hidden initially) -->
-        <div class="verify-form-card approved-state" id="approvedState" style="display: none; text-align: center;">
-            <div class="pending-icon" style="background-color: #dcfce7; color: #16a34a;">
+        <div class="verify-form-card approved-state verify-state-card-hidden" id="approvedState">
+            <div class="pending-icon approved">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Verification Approved
+            <h1 class="verify-state-title">Verification Approved
             </h1>
-            <p style="color: #64748b; margin-bottom: 2rem; line-height: 1.6;">
+            <p class="verify-state-text">
                 Congratulations! Your profile has been verified successfully. <br>
                 You can now start accepting jobs.
             </p>
-            <a href="worker-page.html" class="submit-btn"
-                style="text-decoration: none; display: inline-block; width: auto; padding: 0.75rem 2rem; background-color: #16a34a;">Go
+            <a href="worker-page.html" class="submit-btn verify-state-btn verify-btn-approved">Go
                 to Dashboard</a>
         </div>
 
         <!-- Rejected State (Hidden initially) -->
-        <div class="verify-form-card rejected-state" id="rejectedState" style="display: none; text-align: center;">
-            <div class="pending-icon" style="background-color: #fee2e2; color: #b91c1c;">
+        <div class="verify-form-card rejected-state verify-state-card-hidden" id="rejectedState">
+            <div class="pending-icon rejected">
                 <i class="fas fa-times-circle"></i>
             </div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Verification
+            <h1 class="verify-state-title">Verification
                 Rejected
             </h1>
-            <p style="color: #64748b; margin-bottom: 2rem; line-height: 1.6;">
+            <p class="verify-state-text">
                 Unfortunatly, your profile verification was rejected. <br>
                 Please review your details or contact support.
             </p>
             <a href="#"
                 onclick="document.getElementById('rejectedState').style.display='none'; document.getElementById('verifyFormCard').style.display='block';"
-                class="submit-btn"
-                style="text-decoration: none; display: inline-block; width: auto; padding: 0.75rem 2rem; background-color: #334155;">Try
+                class="submit-btn verify-state-btn verify-btn-rejected">Try
                 Again</a>
-            <a href="worker-page.html"
-                style="display:block; margin-top:1rem; color:#64748b; text-decoration:none; font-size:0.9rem;">Back to
+            <a href="worker-page.html" class="verify-link-home">Back to
                 Home</a>
         </div>
 

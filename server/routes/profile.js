@@ -41,7 +41,8 @@ router.get('/:id', async (req, res) => {
 // @desc    Update user profile
 // @access  Public
 router.put('/:id', async (req, res) => {
-    const { name, mobile, dob, gender, address, profession, experience } = req.body;
+    const { name, mobile, dob, gender, address, profession, experience, profilePic } = req.body;
+
 
     // fields common to all
     const commonFields = {};
@@ -58,6 +59,8 @@ router.put('/:id', async (req, res) => {
     const workerFields = {};
     if (profession) workerFields.profession = profession;
     if (experience) workerFields.experience = experience;
+    if (profilePic !== undefined) workerFields.profilePic = profilePic; // Allow setting to null/string
+
 
     try {
         const result = await findUserInCollections(req.params.id);

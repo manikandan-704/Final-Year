@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Set First Letter
-    initialsContainer.textContent = savedName.charAt(0).toUpperCase();
+    // initialsContainer.textContent = savedName.charAt(0).toUpperCase();
+    initialsContainer.innerHTML = '<i class="fas fa-user" style="font-size: 3rem;"></i>';
+
 
     // 3. Set Profession
     const savedProfession = localStorage.getItem('userProfession');
@@ -105,7 +107,103 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedEmail) {
         fetchVerifiedDetails(savedEmail);
     }
+
+    // 6. Fetch Worker Profile (for custom profile picture)
+    const workerId = localStorage.getItem('workerId');
+    if (workerId) {
+        fetchWorkerProfile(workerId);
+    }
+
+    // 7. Profile Upload Handler
+    const profileUpload = document.getElementById('profileUpload');
+    if (profileUpload) {
+        profileUpload.addEventListener('change', handleProfileUpload);
+    }
 });
+
+async function fetchWorkerProfile(workerId) {
+    try {
+        const res = await fetch(`http://localhost:5000/api/profile/${workerId}`);
+        const data = await res.json();
+
+        if (data && data.profilePic) {
+            const workerProfileImg = document.getElementById('workerProfileImg');
+            const initialsContainer = document.getElementById('workerInitials');
+
+            if (workerProfileImg) {
+                workerProfileImg.src = data.profilePic;
+                workerProfileImg.dataset.custom = 'true';
+                workerProfileImg.classList.remove('hidden');
+
+                workerProfileImg.style.display = 'block';
+                workerProfileImg.style.objectFit = 'cover';
+                workerProfileImg.style.width = '100px';
+                workerProfileImg.style.height = '100px';
+                workerProfileImg.style.borderRadius = '50%';
+            }
+            if (initialsContainer) {
+                initialsContainer.classList.add('hidden');
+                initialsContainer.style.display = 'none';
+            }
+        }
+    } catch (err) {
+        console.error("Failed to fetch worker profile", err);
+    }
+}
+
+async function handleProfileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate size (e.g. 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        alert("File size checks: Please upload an image smaller than 5MB.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+        const base64String = reader.result;
+        const workerId = localStorage.getItem('workerId');
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/profile/${workerId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ profilePic: base64String })
+            });
+
+            if (res.ok) {
+                // Update UI immediately
+                const workerProfileImg = document.getElementById('workerProfileImg');
+                const initialsContainer = document.getElementById('workerInitials');
+
+                if (workerProfileImg) {
+                    workerProfileImg.src = base64String; // Show newly uploaded image
+                    workerProfileImg.dataset.custom = 'true';
+                    workerProfileImg.classList.remove('hidden');
+
+                    workerProfileImg.style.display = 'block';
+                    workerProfileImg.style.objectFit = 'cover';
+                }
+                if (initialsContainer) {
+                    initialsContainer.classList.add('hidden');
+                    initialsContainer.style.display = 'none';
+                }
+                alert("Profile photo updated successfully!");
+            } else {
+                alert("Failed to update profile photo.");
+            }
+        } catch (err) {
+            console.error("Error uploading profile photo:", err);
+            alert("Error uploading profile photo.");
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
 
 async function fetchVerifiedDetails(email) {
     try {
@@ -118,16 +216,23 @@ async function fetchVerifiedDetails(email) {
                 const initialsContainer = document.getElementById('workerInitials');
                 const workerProfileImg = document.getElementById('workerProfileImg');
 
-                if (initialsContainer) initialsContainer.style.display = 'none';
-                if (workerProfileImg) {
-                    workerProfileImg.src = data.data.profilePhotoData;
-                    workerProfileImg.style.display = 'block';
-                    workerProfileImg.style.objectFit = 'cover';
-                    workerProfileImg.style.width = '100px';
-                    workerProfileImg.style.height = '100px';
-                    workerProfileImg.style.borderRadius = '50%';
+                // respect custom profile pic
+                if (workerProfileImg && workerProfileImg.dataset.custom === 'true') {
+                    // Do nothing, custom image is set
+                } else {
+                    if (initialsContainer) initialsContainer.style.display = 'none';
+                    if (workerProfileImg) {
+                        workerProfileImg.src = data.data.profilePhotoData;
+                        workerProfileImg.classList.remove('hidden'); // Ensure visible
+                        workerProfileImg.style.display = 'block';
+                        workerProfileImg.style.objectFit = 'cover';
+                        workerProfileImg.style.width = '100px';
+                        workerProfileImg.style.height = '100px';
+                        workerProfileImg.style.borderRadius = '50%';
+                    }
                 }
             }
+
 
             const extraInfoContainer = document.getElementById('workerExtraInfo');
             if (extraInfoContainer) {

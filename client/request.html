@@ -35,7 +35,7 @@
         </div>
     </header>
 
-    <div class="worker-dashboard-container" style="min-height: calc(100vh - 80px);">
+    <div class="worker-dashboard-container min-h-screen-minus-header">
         <!-- Sidebar -->
         <aside class="worker-sidebar worker-sidebar-transparent">
             <div class="worker-profile-section">
@@ -43,8 +43,8 @@
                 <div class="profile-image-container" id="profileContainer" title="Click to upload photo">
                     <img src="images/default-avatar.png" alt="Profile" id="workerProfileImg" class="worker-profile-img"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                    <i class="fas fa-camera text-gray-400 text-2xl" id="placeholderIcon" style="display: none;"></i>
-                    <input type="file" id="profileUpload" accept="image/*" style="display: none;">
+                    <i class="fas fa-camera text-gray-400 text-2xl hidden" id="placeholderIcon"></i>
+                    <input type="file" id="profileUpload" accept="image/*" class="hidden">
 
                     <!-- Overlay for hover effect -->
                     <div class="upload-overlay">
@@ -70,46 +70,37 @@
     </div>
 
     <!-- Accept Modal -->
-    <div id="acceptModal" class="modal"
-        style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
-        <div class="modal-content"
-            style="background-color: #fefefe; margin: 10% auto; padding: 2rem; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #0f172a;">Accept Request</h2>
-                <span class="close-modal" onclick="closeAcceptModal()"
-                    style="color: #64748b; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1;">&times;</span>
+    <div id="acceptModal" class="modal modal-overlay">
+        <div class="modal-content-card">
+            <div class="modal-header">
+                <h2 class="modal-title">Accept Request</h2>
+                <span class="close-modal modal-close" onclick="closeAcceptModal()">&times;</span>
             </div>
 
             <form id="acceptForm">
-                <div id="acceptFormFields" style="margin-bottom: 2rem;">
-                    <div style="text-align: center; margin-bottom: 1.5rem;">
-                        <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.95rem;">Please scan the QR code to
+                <div id="acceptFormFields" class="modal-body">
+                    <div class="modal-center-text">
+                        <p class="modal-helper-text">Please scan the QR code to
                             complete the payment for this lead.</p>
                         <!-- QR Code Placeholder -->
-                        <div
-                            style="background: #f8fafc; padding: 1rem; display: inline-block; border-radius: 12px; border: 1px dashed #cbd5e1;">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DutyFixIT-Worker-Payment"
-                                alt="Payment QR Code" style="width: 150px; height: 150px; display: block;">
+                        <div class="qr-code-container">
+                            <img src="images/QR.jpeg" alt="Payment QR Code" class="qr-code-img">
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label for="paymentScreenshot"
-                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155; font-size: 0.9rem;">
-                            Upload Payment Screenshot <span style="color: #ef4444;">*</span>
+                    <div class="form-group mb-0">
+                        <label for="paymentScreenshot" class="modal-label">
+                            Upload Payment Screenshot <span class="input-required">*</span>
                         </label>
-                        <input type="file" id="paymentScreenshot" accept="image/*" required
-                            style="width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.9rem; color: #475569; background: #f8fafc;">
-                        <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">Supported formats: JPG, PNG
+                        <input type="file" id="paymentScreenshot" accept="image/*" required class="modal-input-file">
+                        <p class="modal-input-helper">Supported formats: JPG, PNG
                         </p>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 1rem;">
-                    <button type="button" onclick="closeAcceptModal()"
-                        style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: none; border-radius: 6px; font-weight: 500; cursor: pointer;">Cancel</button>
-                    <button type="submit"
-                        style="padding: 0.5rem 1rem; background: #22c55e; color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer;">Confirm
+                <div class="modal-actions">
+                    <button type="button" onclick="closeAcceptModal()" class="btn-cancel">Cancel</button>
+                    <button type="submit" class="btn-confirm">Confirm
                         Accept</button>
                 </div>
             </form>

@@ -27,6 +27,9 @@ const WorkerSchema = new mongoose.Schema({
     experience: {
         type: String
     },
+    profilePic: {
+        type: String // Base64 or URL
+    },
     isVerified: {
         type: Boolean,
         default: false
