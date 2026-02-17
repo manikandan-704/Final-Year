@@ -85,21 +85,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         workersGrid.innerHTML = '';
         workers.forEach(worker => {
-            const rating = (Math.random() * (5.0 - 4.0) + 4.0).toFixed(1);
-            const jobs = Math.floor(Math.random() * 50) + 1;
+            const rating = worker.rating !== undefined ? Number(worker.rating).toFixed(1) : '5.0';
+            const jobs = worker.jobsCompleted !== undefined ? worker.jobsCompleted : 0;
             const initial = worker.name ? worker.name.charAt(0).toUpperCase() : 'U';
+
+            // Check for profile image
+            let imageContent = initial;
+            if (worker.profilePhotoData) {
+                imageContent = `<img src="${worker.profilePhotoData}" alt="${worker.name}" class="worker-img">`;
+            }
 
             const card = document.createElement('div');
             card.className = 'worker-card';
             card.innerHTML = `
                 <div class="worker-img-container">
-                   ${initial}
+                   ${imageContent}
                     <div class="verified-badge"><i class="fas fa-check-circle"></i> Verified</div>
                 </div>
                 <div class="worker-info">
                     <div class="worker-header">
                         <div class="worker-name">${worker.name || 'Professional'}</div>
-                        <div class="worker-rating"><i class="fas fa-star"></i> ${rating}</div>
+                        <div class="worker-rating" onclick="window.openReviewsModal('${worker.workerId}', '${worker.name}')" style="cursor: pointer;" title="View Reviews">
+                            <i class="fas fa-star"></i> ${rating}
+                        </div>
                     </div>
                     <div class="worker-details">
                         <div class="detail-item"><i class="fas fa-briefcase"></i> <span>${worker.profession || service}</span></div>
@@ -119,5 +127,73 @@ document.addEventListener('DOMContentLoaded', () => {
         const city = cityFilter ? cityFilter.value : '';
         const targetUrl = `booking-page.html?service=${encodeURIComponent(service)}&workerId=${id}&workerName=${encodeURIComponent(name)}&workerPhone=${encodeURIComponent(phone || '')}&city=${encodeURIComponent(city)}`;
         window.location.href = targetUrl;
+    };
+
+    // Review Modal Logic
+    const reviewsModal = document.getElementById('reviewsModal');
+    const reviewsList = document.getElementById('modalReviewsList');
+    const modalWorkerName = document.getElementById('modalWorkerName');
+
+    window.openReviewsModal = async function (workerId, workerName) {
+        if (!reviewsModal) return;
+
+        // Prevent bubbling if triggered from card click (though structure prevents it mostly)
+        // event.stopPropagation(); 
+
+        reviewsModal.style.display = 'block';
+        if (modalWorkerName) modalWorkerName.textContent = `Reviews for ${workerName}`;
+        if (reviewsList) reviewsList.innerHTML = '<p class="loading-text" style="text-align:center; padding: 2rem;">Loading reviews...</p>';
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/bookings/worker/${workerId}`);
+            if (!res.ok) throw new Error('Failed to fetch reviews');
+
+            const bookings = await res.json();
+            // Filter bookings that are completed AND have feedback or rating
+            const reviews = bookings.filter(b => b.status === 'Completed' && (b.feedback || b.rating));
+
+            renderReviews(reviews);
+        } catch (err) {
+            console.error(err);
+            if (reviewsList) reviewsList.innerHTML = '<p class="error-msg" style="color:red; text-align:center;">Failed to load reviews.</p>';
+        }
+    };
+
+    window.closeReviewsModal = function () {
+        if (reviewsModal) reviewsModal.style.display = 'none';
+    };
+
+    function renderReviews(reviews) {
+        if (!reviewsList) return;
+        reviewsList.innerHTML = '';
+
+        if (reviews.length === 0) {
+            reviewsList.innerHTML = '<div class="no-reviews">No reviews yet for this professional.</div>';
+            return;
+        }
+
+        reviews.forEach(review => {
+            const date = new Date(review.createdAt || Date.now()).toLocaleDateString();
+            const ratingStars = '★'.repeat(review.rating || 0) + '☆'.repeat(5 - (review.rating || 0));
+
+            const reviewItem = document.createElement('div');
+            reviewItem.className = 'review-card';
+            reviewItem.innerHTML = `
+                <div class="review-header">
+                    <span class="reviewer-name">${review.clientName || 'Client'}</span>
+                    <span class="review-rating" style="color:#f59e0b;">${ratingStars}</span>
+                </div>
+                <p class="review-text">${review.feedback || 'No written feedback.'}</p>
+                <div class="review-date">${date}</div>
+            `;
+            reviewsList.appendChild(reviewItem);
+        });
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function (event) {
+        if (event.target === reviewsModal) {
+            closeReviewsModal();
+        }
     };
 });

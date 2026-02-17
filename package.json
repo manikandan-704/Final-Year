@@ -4,8 +4,8 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js",
+    "dev": "node server/server.js",
+    "server": "nodemon server/server.js",
     "check-db": "node scripts/check_db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -23,29 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set Name
     workerName.textContent = savedName;
 
-    // 2. Enforce Initials (No Image Upload)
-    if (workerProfileImg) workerProfileImg.style.display = 'none';
-    if (placeholderIcon) placeholderIcon.style.display = 'none';
-
-    let initialsContainer = document.getElementById('workerInitials');
-    if (!initialsContainer) {
-        initialsContainer = document.createElement('div');
-        initialsContainer.id = 'workerInitials';
-        initialsContainer.style.width = '100%';
-        initialsContainer.style.height = '100%';
-        initialsContainer.style.display = 'flex';
-        initialsContainer.style.alignItems = 'center';
-        initialsContainer.style.justifyContent = 'center';
-        initialsContainer.style.backgroundColor = '#0f172a';
-        initialsContainer.style.color = 'white';
-        initialsContainer.style.fontSize = '3rem';
-        initialsContainer.style.fontWeight = '700';
-        profileContainer.appendChild(initialsContainer);
+    // 2. Default Avatar Setup
+    if (workerProfileImg) {
+        // Always ensure image is visible by default (it has source in HTML now)
+        workerProfileImg.classList.remove('hidden');
+        workerProfileImg.style.display = 'block';
     }
 
-    // Set First Letter
-    // initialsContainer.textContent = savedName.charAt(0).toUpperCase();
-    initialsContainer.innerHTML = '<i class="fas fa-user" style="font-size: 3rem;"></i>';
+    // Hide initials container by default
+    let initialsContainer = document.getElementById('workerInitials');
+    if (initialsContainer) {
+        initialsContainer.style.display = 'none';
+    }
 
 
     // 3. Set Profession
@@ -236,20 +225,23 @@ async function fetchVerifiedDetails(email) {
 
             const extraInfoContainer = document.getElementById('workerExtraInfo');
             if (extraInfoContainer) {
-                const detailsHTML = `
-                <div style="margin-top: 1rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
-                    <div style="font-size: 0.85rem; color: #15803d; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-check-circle" style="margin-right: 5px;"></i> Verified Worker
+                // Check if already appended to avoid duplicates if called multiple times
+                if (!document.getElementById('verified-badge')) {
+                    const detailsHTML = `
+                    <div id="verified-badge" style="margin-top: 1rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+                        <div style="font-size: 0.85rem; color: #15803d; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check-circle" style="margin-right: 5px;"></i> Verified Worker
+                        </div>
+                        <div style="font-size: 0.9rem; margin-bottom: 0.25rem;">
+                            <span style="color: #64748b;">ID:</span> <span style="font-weight: 500; color: #334155;">${data.data.idType || 'ID'} - ${data.data.idNumber || 'N/A'}</span>
+                        </div>
+                        <div style="font-size: 0.9rem;">
+                            <span style="color: #64748b;">Location:</span> <span style="font-weight: 500; color: #334155;">${data.data.city || 'N/A'}</span>
+                        </div>
                     </div>
-                    <div style="font-size: 0.9rem; margin-bottom: 0.25rem;">
-                        <span style="color: #64748b;">ID:</span> <span style="font-weight: 500; color: #334155;">${data.data.idType} - ${data.data.idNumber}</span>
-                    </div>
-                    <div style="font-size: 0.9rem;">
-                        <span style="color: #64748b;">Location:</span> <span style="font-weight: 500; color: #334155;">${data.data.city}</span>
-                    </div>
-                </div>
-                `;
-                extraInfoContainer.innerHTML += detailsHTML; // Append to existing info
+                    `;
+                    extraInfoContainer.innerHTML += detailsHTML; // Append to existing info
+                }
             }
         }
     } catch (err) {
@@ -273,7 +265,10 @@ async function updateWorkerDashboard() {
         const ratingEl = document.querySelector('.stats-card:nth-child(2) .stats-value');
 
         if (jobsEl) jobsEl.textContent = dataStats.jobsDone || 0;
-        if (ratingEl) ratingEl.innerHTML = `${dataStats.rating || 0.0} <span style="font-size: 0.875rem; color: #64748b; font-weight: 400;">/ 5.0</span>`;
+        if (ratingEl) {
+            const displayRating = dataStats.rating ? Number(dataStats.rating).toFixed(1) : '5.0';
+            ratingEl.innerHTML = `${displayRating} <span style="font-size: 0.875rem; color: #64748b; font-weight: 400;">/ 5.0</span>`;
+        }
 
         // Fetch Requests for sidebar notification
         const resReq = await fetch('http://localhost:5000/api/bookings/worker/' + workerId);

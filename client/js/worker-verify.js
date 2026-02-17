@@ -230,7 +230,7 @@ window.handleVerification = function (e) {
 
     if (!validateDOB(dobInput)) return alert("Please enter a valid Date of Birth (Age 18-50).");
     if (!/^[6-9]\d{9}$/.test(mobile)) return alert("Invalid Mobile Number. It must be 10 digits and start with 6-9.");
-    if (!validateID({ value: idNumber })) return alert("Invalid ID Number format."); // Simplified call
+    if (!validateID(document.getElementById('v-id-number'))) return alert("Invalid ID Number format.");
     if (!/^\d{6}$/.test(pincode)) return alert("Invalid Pincode. It must be exactly 6 digits.");
     if (address.length < 15 || address.length > 100) return alert("Address must be between 15 and 100 characters.");
 

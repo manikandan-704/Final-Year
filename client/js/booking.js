@@ -35,12 +35,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (workerNameParam) {
             const workerDisplay = document.getElementById('selectedWorkerDisplay');
             if (workerDisplay) {
+                // Determine image content (Initials or Photo) - Default to initials
+                let imageHtml = `
+                    <div style="width:50px; height:50px; background:#0f172a; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem;">
+                        ${workerNameParam.charAt(0).toUpperCase()}
+                    </div>`;
+
+                // Try to fetch worker details to get profile photo
+                // We use verification API or Profile API. Since verification has the photo data:
+                fetch(`http://localhost:5000/api/verification?status=Approved`).then(res => res.json()).then(data => {
+                    // Find worker by ID or Name (ID is safer)
+                    const worker = data.find(w => w.workerId === workerIdParam || w.name === decodeURIComponent(workerNameParam));
+                    if (worker && worker.profilePhotoData) {
+                        const imgTag = `<img src="${worker.profilePhotoData}" alt="${worker.name}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">`;
+                        const avatarContainer = workerDisplay.querySelector('div[style*="border-radius:50%"]');
+                        if (avatarContainer) {
+                            avatarContainer.outerHTML = imgTag;
+                        }
+                    }
+                }).catch(err => console.error("Could not fetch worker image", err));
+
+
                 workerDisplay.style.display = 'block';
                 workerDisplay.innerHTML = `
                     <div style="display:flex; align-items:center; gap:1rem;">
-                        <div style="width:50px; height:50px; background:#0f172a; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem;">
-                            ${workerNameParam.charAt(0).toUpperCase()}
-                        </div>
+                        ${imageHtml}
                         <div>
                             <span style="display:block; font-size:0.85rem; color:#64748b; font-weight:500; margin-bottom:0.25rem;">Selected Professional</span>
                             <h4 style="margin:0; font-size:1.1rem; font-weight:700; color:#1e293b;">${decodeURIComponent(workerNameParam)}</h4>
@@ -372,8 +391,8 @@ async function fetchWorkersForCity(city) {
         }
 
         workers.forEach(w => {
-            const rating = (Math.random() * (5.0 - 3.5) + 3.5).toFixed(1);
-            const reviewCount = Math.floor(Math.random() * 100) + 5;
+            const rating = w.rating !== undefined ? Number(w.rating).toFixed(1) : '5.0';
+            const jobs = w.jobsCompleted !== undefined ? w.jobsCompleted : 0;
 
             const card = document.createElement('div');
             card.className = 'worker-card';
@@ -382,18 +401,29 @@ async function fetchWorkersForCity(city) {
             card.setAttribute('data-phone', w.mobile || '');
             card.onclick = () => window.selectWorker(w._id, card);
 
+            // Profile Image Logic
+            let imageHtml = `
+                <div style="width:40px; height:40px; background:#0f172a; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">
+                    ${w.name.charAt(0).toUpperCase()}
+                </div>`;
+
+            if (w.profilePhotoData) {
+                imageHtml = `<img src="${w.profilePhotoData}" alt="${w.name}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">`;
+            }
+
             card.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
-                    <div style="width:40px; height:40px; background:#0f172a; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">
-                        ${w.name.charAt(0).toUpperCase()}
-                    </div>
+                    ${imageHtml}
                     <div>
                         <h4 style="margin:0; font-size:0.95rem; font-weight:600; color:#1e293b;">${w.name}</h4>
                         <span style="font-size:0.8rem; color:#64748b;">Verified <i class="fas fa-check-circle" style="color:#15803d;"></i></span>
                     </div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem;">
-                    <span style="color:#f59e0b; font-weight:700;"><i class="fas fa-star"></i> ${rating} <span style="color:#94a3b8; font-weight:400; font-size:0.8rem;">(${reviewCount})</span></span>
+                    <div style="display:flex; gap: 0.5rem; align-items:center;">
+                        <span style="color:#f59e0b; font-weight:700;"><i class="fas fa-star"></i> ${rating}</span>
+                        <span style="color:#64748b; font-size:0.8rem;">• ${jobs} Jobs</span>
+                    </div>
                     <span style="color:#2563eb; font-weight:500;">Select</span>
                 </div>
             `;

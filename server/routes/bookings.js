@@ -172,7 +172,7 @@ router.put('/:id', async (req, res) => {
 
         // Notification Logic for 'Completed' status
         if (status === 'Completed') {
-            // Notify Worker
+            // 1. Notify Worker
             if (booking.workerId) {
                 const workerNotification = new Notification({
                     recipientId: booking.workerId,
@@ -181,9 +181,38 @@ router.put('/:id', async (req, res) => {
                     bookingId: booking._id
                 });
                 await workerNotification.save();
+
+                // 2. Update Worker Stats (Rating & Jobs Completed)
+
+                // A. Count Total Jobs Completed (Rated or Not)
+                const allCompleted = await Booking.find({
+                    workerId: booking.workerId,
+                    status: 'Completed'
+                });
+                const totalJobsCount = allCompleted.length;
+
+                // B. Calculate Average Rating (Only from rated bookings)
+                const ratedBookings = allCompleted.filter(b => b.rating && b.rating > 0);
+                let newAverageRating = 0;
+
+                if (ratedBookings.length > 0) {
+                    const sumRating = ratedBookings.reduce((sum, b) => sum + (b.rating || 0), 0);
+                    newAverageRating = (sumRating / ratedBookings.length);
+                }
+
+                // Update the Worker document
+                await Worker.findOneAndUpdate(
+                    { workerId: booking.workerId },
+                    {
+                        $set: {
+                            rating: newAverageRating,
+                            jobsCompleted: totalJobsCount
+                        }
+                    }
+                );
             }
 
-            // Notify Admin
+            // 3. Notify Admin
             const adminNotification = new Notification({
                 recipientId: 'Admin',
                 recipientRole: 'Admin',

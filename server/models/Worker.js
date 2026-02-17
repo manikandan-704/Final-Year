@@ -39,6 +39,14 @@ const WorkerSchema = new mongoose.Schema({
         enum: ['pending', 'approved', 'rejected', 'none'],
         default: 'none'
     },
+    rating: {
+        type: Number,
+        default: 5.0
+    },
+    jobsCompleted: {
+        type: Number,
+        default: 0
+    },
     createdAt: {
         type: Date,
         default: Date.now

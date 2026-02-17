@@ -432,7 +432,7 @@ async function loadWorkerReviews() {
                     <p class="worker-card-role">${worker.profession}</p>
                     <div style="margin-top: 0.5rem;">
                         <span class="rating-badge" style="color: ${ratingColor}; background: ${worker.rating !== 'N/A' ? '#fffbeb' : '#f1f5f9'};">
-                            <i class="fas fa-star" style="color: ${worker.rating !== 'N/A' ? '#f59e0b' : '#cbd5e1'};"></i> ${ratingVal}
+                            <i class="fas fa-star" style="color: ${worker.rating !== 'N/A' ? '#f59e0b' : '#cbd5e1'};"></i> ${ratingVal !== 'New' ? Number(ratingVal).toFixed(1) : 'New'}
                         </span>
                     </div>
                 </div>

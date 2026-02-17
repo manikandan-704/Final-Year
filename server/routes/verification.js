@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const VerificationRequest = require('../models/VerificationRequest');
+const Worker = require('../models/Worker');
 
 // @route   POST /api/verification
 // @desc    Submit a new verification request
@@ -51,12 +52,28 @@ router.get('/', async (req, res) => {
         if (profession) query.profession = { $regex: profession, $options: 'i' };
 
         const requests = await VerificationRequest.find(query).sort({ date: -1 });
-        res.json(requests);
+
+        // Enrich verification requests with real-time worker data (rating, jobs)
+        const enrichedRequests = await Promise.all(requests.map(async (req) => {
+            const reqObj = req.toObject();
+            if (req.status === 'Approved') {
+                const worker = await Worker.findOne({ email: req.email });
+                if (worker) {
+                    reqObj.rating = worker.rating || 5.0;
+                    reqObj.jobsCompleted = worker.jobsCompleted || 0;
+                }
+            }
+            return reqObj;
+        }));
+
+        res.json(enrichedRequests);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
+
+// Worker model imported at top
 
 // @route   PUT /api/verification/:id
 // @desc    Update request status (Approve/Reject)
@@ -72,6 +89,24 @@ router.put('/:id', async (req, res) => {
 
         request.status = status;
         await request.save();
+
+        if (status === 'Approved') {
+            const worker = await Worker.findOne({ email: request.email });
+            if (worker) {
+                worker.isVerified = true;
+                worker.verificationStatus = 'approved';
+                if (request.profilePhotoData) {
+                    worker.profilePic = request.profilePhotoData;
+                }
+                await worker.save();
+            }
+        } else if (status === 'Rejected') {
+            const worker = await Worker.findOne({ email: request.email });
+            if (worker) {
+                worker.verificationStatus = 'rejected';
+                await worker.save();
+            }
+        }
 
         res.json(request);
     } catch (err) {

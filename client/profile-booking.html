@@ -102,6 +102,20 @@
         </div>
     </main>
 
+    <!-- Reviews Modal -->
+    <div id="reviewsModal" class="modal">
+        <div class="modal-content reviews-content">
+            <span class="close-modal" onclick="closeReviewsModal()">&times;</span>
+            <h2 id="modalWorkerName">Worker Reviews</h2>
+            <div id="modalReviewsList" class="reviews-list">
+                <p class="loading-text">Loading reviews...</p>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="closeReviewsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
