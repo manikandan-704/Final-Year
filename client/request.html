@@ -40,16 +40,15 @@
         <aside class="worker-sidebar worker-sidebar-transparent">
             <div class="worker-profile-section">
                 <!-- Profile Image with Upload Trigger -->
-                <div class="profile-image-container" id="profileContainer" title="Click to upload photo">
-                    <img src="images/default-avatar.png" alt="Profile" id="workerProfileImg" class="worker-profile-img"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                    <i class="fas fa-camera text-gray-400 text-2xl hidden" id="placeholderIcon"></i>
-                    <input type="file" id="profileUpload" accept="image/*" class="hidden">
+                <div class="profile-image-container" id="profileContainer" title="Click to upload photo"
+                    onclick="document.getElementById('profileUpload').click()">
+                    <img src="images/default-avatar.svg" alt="Profile" id="workerProfileImg" class="worker-profile-img">
 
                     <!-- Overlay for hover effect -->
                     <div class="upload-overlay">
                         <i class="fas fa-camera"></i>
                     </div>
+                    <input type="file" id="profileUpload" accept="image/*" style="display: none;">
                 </div>
 
                 <h2 class="worker-name" id="workerName">Worker Name</h2>

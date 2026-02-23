@@ -176,13 +176,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.openAcceptModal = function (id) {
         currentAcceptId = id;
         const modal = document.getElementById('acceptModal');
-        if (modal) modal.style.display = 'block';
+        if (modal) {
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        }
     };
 
     window.closeAcceptModal = function () {
         currentAcceptId = null;
         const modal = document.getElementById('acceptModal');
-        if (modal) modal.style.display = 'none';
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('active');
+        }
         // Reset form if needed
         const form = document.getElementById('acceptForm');
         if (form) form.reset();

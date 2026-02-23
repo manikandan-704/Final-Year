@@ -43,8 +43,8 @@
                 <!-- Profile Image (Initials Only) -->
                 <div class="profile-image-container" id="profileContainer"
                     onclick="document.getElementById('profileUpload').click()">
-                    <img src="images/default-avatar.svg" alt="Profile" id="workerProfileImg"
-                        class="worker-profile-img hidden">
+                    <img src="images/default-avatar.svg" alt="Profile" id="workerProfileImg" class="worker-profile-img"
+                        style="display: none;">
                     <div id="workerInitials" class="worker-initials-container">
                         <!-- Initials injected by JS -->
                     </div>
@@ -53,7 +53,7 @@
                     <div class="upload-overlay">
                         <i class="fas fa-camera"></i>
                     </div>
-                    <input type="file" id="profileUpload" accept="image/*" class="hidden">
+                    <input type="file" id="profileUpload" accept="image/*" style="display: none;">
                 </div>
 
                 <h2 class="worker-name" id="workerName">Worker Name</h2>

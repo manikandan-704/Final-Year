@@ -151,9 +151,6 @@ function validateID(input) {
 
     switch (idType) {
         case "Aadhaar": idRegex = /^\d{12}$/; errMessage = "Must be 12 digits."; break;
-        case "PAN": idRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/; errMessage = "Format: ABCDE1234F"; break;
-        case "Voter ID": idRegex = /^[A-Z]{3}[0-9]{7}$/; errMessage = "Format: ABC1234567"; break;
-        case "Passport": idRegex = /^[A-Z][0-9]{7}$/; errMessage = "Format: A1234567"; break;
         default: return true;
     }
 
