@@ -181,7 +181,7 @@ function validateDOB(input) {
 async function checkVerificationStatus(email) {
     if (!email) return;
     try {
-        const res = await fetch(`http://localhost:5000/api/verification/status?email=${email}`);
+        const res = await fetch(`https://final-year-hpzq.onrender.com/api/verification/status?email=${email}`);
         const data = await res.json();
         const formCard = document.getElementById('verifyFormCard');
         const pendingCard = document.getElementById('pendingState');
@@ -258,7 +258,7 @@ window.handleVerification = function (e) {
 
 async function saveRequest(data) {
     try {
-        const res = await fetch('http://localhost:5000/api/verification', {
+        const res = await fetch('https://final-year-hpzq.onrender.com/api/verification', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

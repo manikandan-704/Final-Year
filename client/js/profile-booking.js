@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         workersGrid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Loading professionals...</p>';
 
         try {
-            const apiUrl = `http://localhost:5000/api/verification?status=Approved&city=${encodeURIComponent(city)}&profession=${encodeURIComponent(service)}`;
+            const apiUrl = `https://final-year-hpzq.onrender.com/api/verification?status=Approved&city=${encodeURIComponent(city)}&profession=${encodeURIComponent(service)}`;
 
             const res = await fetch(apiUrl);
             if (!res.ok) throw new Error(`Status ${res.status}`);
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (reviewsList) reviewsList.innerHTML = '<p class="loading-text" style="text-align:center; padding: 2rem;">Loading reviews...</p>';
 
         try {
-            const res = await fetch(`http://localhost:5000/api/bookings/worker/${workerId}`);
+            const res = await fetch(`https://final-year-hpzq.onrender.com/api/bookings/worker/${workerId}`);
             if (!res.ok) throw new Error('Failed to fetch reviews');
 
             const bookings = await res.json();

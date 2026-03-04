@@ -63,7 +63,7 @@ window.confirmCancellation = async function () {
     }
 
     try {
-        const res = await fetch(`http://localhost:5000/api/bookings/${currentBookingIdToCancel}`, {
+        const res = await fetch(`https://final-year-hpzq.onrender.com/api/bookings/${currentBookingIdToCancel}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -130,7 +130,7 @@ window.submitReview = async function () {
     const feedback = document.getElementById('reviewFeedback').value.trim();
 
     try {
-        const res = await fetch(`http://localhost:5000/api/bookings/${currentReviewBookingId}`, {
+        const res = await fetch(`https://final-year-hpzq.onrender.com/api/bookings/${currentReviewBookingId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -158,7 +158,7 @@ async function loadMyBookings(email) {
     const container = document.getElementById('bookingsList');
 
     try {
-        const res = await fetch(`http://localhost:5000/api/bookings/client/${email}`);
+        const res = await fetch(`https://final-year-hpzq.onrender.com/api/bookings/client/${email}`);
         if (!res.ok) throw new Error('Failed to fetch bookings');
 
         const bookings = await res.json();

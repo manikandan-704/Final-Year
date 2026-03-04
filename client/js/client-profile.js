@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     authGuard(['client']);
     setupHeaderUser();
 
-    const API_URL = 'http://localhost:5000/api/profile';
+    const API_URL = 'https://final-year-hpzq.onrender.com//api/profile';
     const userId = localStorage.getItem('userId');
 
     // Header Info

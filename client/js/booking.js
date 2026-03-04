@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Try to fetch worker details to get profile photo
                 // We use verification API or Profile API. Since verification has the photo data:
-                fetch(`http://localhost:5000/api/verification?status=Approved`).then(res => res.json()).then(data => {
+                fetch(`https://final-year-hpzq.onrender.com/api/verification?status=Approved`).then(res => res.json()).then(data => {
                     // Find worker by ID or Name (ID is safer)
                     const worker = data.find(w => w.workerId === workerIdParam || w.name === decodeURIComponent(workerNameParam));
                     if (worker && worker.profilePhotoData) {
@@ -340,7 +340,7 @@ window.handleBooking = async function (event) {
     };
 
     try {
-        const res = await fetch('http://localhost:5000/api/bookings', {
+        const res = await fetch('https://final-year-hpzq.onrender.com//api/bookings', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bookingDetails)
@@ -379,7 +379,7 @@ async function fetchWorkersForCity(city) {
             profession: profession
         });
 
-        const res = await fetch(`http://localhost:5000/api/verification?${queryParams.toString()}`);
+        const res = await fetch(`https://final-year-hpzq.onrender.com//api/verification?${queryParams.toString()}`);
         if (!res.ok) throw new Error('Server returned ' + res.status);
 
         const workers = await res.json();

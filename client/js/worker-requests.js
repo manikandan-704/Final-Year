@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch('http://localhost:5000/api/bookings/worker/' + workerId);
+            const res = await fetch('https://final-year-hpzq.onrender.com/api/bookings/worker/' + workerId);
             if (!res.ok) throw new Error('Failed to fetch requests');
 
             const bookings = await res.json();
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const payload = { status, ...extraData };
             if (rejectionReason) payload.rejectionReason = rejectionReason;
 
-            const res = await fetch('http://localhost:5000/api/bookings/' + id, {
+            const res = await fetch('https://final-year-hpzq.onrender.com/api/bookings/' + id, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

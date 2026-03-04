@@ -255,7 +255,7 @@ async function updateWorkerDashboard() {
 
     try {
         // Fetch dashboard stats (Jobs, Rating)
-        const resStats = await fetch(`http://localhost:5000/api/bookings/dashboard/${workerId}`);
+        const resStats = await fetch(`https://final-year-hpzq.onrender.com/api/bookings/dashboard/${workerId}`);
         const dataStats = await resStats.json();
 
         // Stats card order has changed because earnings card is removed
@@ -271,7 +271,7 @@ async function updateWorkerDashboard() {
         }
 
         // Fetch Requests for sidebar notification
-        const resReq = await fetch('http://localhost:5000/api/bookings/worker/' + workerId);
+        const resReq = await fetch('https://final-year-hpzq.onrender.com/api/bookings/worker/' + workerId);
         if (resReq.ok) {
             const bookings = await resReq.json();
             const pendingCount = bookings.filter(b => b.status === 'Pending').length;
