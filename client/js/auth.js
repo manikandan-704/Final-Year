@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passInput ? passInput.value : '';
 
         // API URL (assuming backend is on port 5000)
-        const API_URL = 'http://localhost:5000/api/auth';
+        const API_URL = 'https://final-year-hpzq.onrender.com/login-page.html/api/auth';
 
         try {
             if (!isLoginMode) {
